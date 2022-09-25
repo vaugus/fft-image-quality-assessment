@@ -1,0 +1,20 @@
+name: CI
+
+on: push
+
+jobs:
+  build-and-test:
+    name: Compile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Compile
+        run: make
+
+      - name: Test
+        run: ./tests
+
+      - name: Clean
+        run: make clean
