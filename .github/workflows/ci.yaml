@@ -10,11 +10,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Pull OpenCV Docker image
+        run: docker pull vaugus/opencv:4.6.0
+
       - name: Compile
-        run: make
+        run: docker run --rm -i --name opencv -v $(pwd):/work vaugus/opencv:4.6.0 make
 
       - name: Test
-        run: ./tests
+        run: docker run --rm -i --name opencv -v $(pwd):/work vaugus/opencv:4.6.0 ./tests
 
       - name: Clean
-        run: make clean
+        run: docker run --rm -i --name opencv -v $(pwd):/work vaugus/opencv:4.6.0 make clean
+
