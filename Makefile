@@ -38,4 +38,4 @@ clean:
 	find . -type f -name '*.o' -exec rm {} \;
 	find . -type f -name '*.gch' -exec rm {} \;
 	rm -f $(TESTS) tests gtest.a gtest_main.a
-	rm -rf googletest
+	#rm -rf googletest
