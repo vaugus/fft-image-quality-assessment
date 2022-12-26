@@ -10,6 +10,7 @@ class ImageIO {
 
 public:
     cv::Mat open_image(std::string const& path);
+    bool save_image(std::string const& path, cv::Mat image);
 };
 
 #endif
