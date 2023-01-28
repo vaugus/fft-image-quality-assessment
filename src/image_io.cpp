@@ -5,5 +5,6 @@ cv::Mat ImageIO::open_image(std::string const& path) {
 }
 
 bool ImageIO::save_image(std::string const& path, cv::Mat image) {
-    return cv::imwrite(path, image);
+    cv::imwrite(path, image);
+    return true;
 }
