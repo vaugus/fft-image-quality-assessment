@@ -8,10 +8,9 @@
 class TestUtils {
 
 public:
-
-    void draw_elipse(cv::Mat image, cv::Point center, double angle);
-    void draw_filled_circle(cv::Mat image, cv::Point center);
-    cv::Mat create_atom_image();
+  void draw_elipse(cv::Mat image, cv::Point center, double angle);
+  void draw_filled_circle(cv::Mat image, cv::Point center);
+  cv::Mat create_atom_image();
 };
 
 #endif
