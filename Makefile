@@ -14,7 +14,7 @@ TEST_OBJ = $(subst .cpp,.o,$(TEST))
 
 .PHONY: all clean
 
-all : setup-googletest gtest_main.a src/image_io.o $(TEST_OBJ) tests
+all : setup-googletest gtest_main.a $(OBJ) $(TEST_OBJ) tests
 
 setup-googletest:
 	$(shell chmod +x setup-googletest.sh && ./setup-googletest.sh)
