@@ -1,0 +1,42 @@
+#include "../include/binary_mask_handler.hpp"
+
+void BinaryMaskHandler::init_angle_functions_with_steps(int step, int limit) {
+  for (int angle = 0; angle <= limit; angle += step) {
+    this->cosines[angle] = cos(angle * M_PI / 180.0);
+    this->sines[angle] = sin(angle * M_PI / 180.0);
+    this->angles.emplace_back(angle);
+  }
+}
+
+double BinaryMaskHandler::compute_vector_head(int x, int y, int angle) {
+  return (x * y) / sqrt(pow((x * this->cosines[angle]), 2) + pow((y * this->sines[angle]), 2));
+}
+
+cv::Mat BinaryMaskHandler::create_radial_vector_mask(int width, int height) {
+  const int center_width = width / 2;
+  const int center_height = height / 2;
+  
+  cv::Point center = cv::Point(center_width, center_height);
+  cv::Mat mask = cv::Mat::zeros(height, width, CV_8UC1);
+
+  cv::Point vector_head;
+  double radius_length = 0.0;
+
+  for (auto angle : this->angles) {
+    radius_length = compute_vector_head(center_height, center_width, angle);
+
+    vector_head.x = (int) round(center.x + radius_length * this->cosines[angle]);
+    vector_head.y = (int) round(center.y + radius_length * this->sines[angle]);
+
+    cv::line(mask, center, vector_head, cv::Scalar(255, 255, 255), 1, 16);
+  }
+
+  mask.convertTo(mask, CV_8UC1);
+
+  return mask;
+}
+
+
+std::string BinaryMaskHandler::handle(std::string request) {
+  return AbstractHandler::handle(request);
+}
