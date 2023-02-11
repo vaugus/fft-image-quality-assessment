@@ -1,4 +1,8 @@
-#include "../include/image_io.hpp"
+#include "../../include/wrappers/image_io.hpp"
+
+ImageIO::ImageIO(Draw *draw) {
+  this->draw = draw;
+}
 
 cv::Mat ImageIO::open_image(std::string const& path) {
   return cv::imread(path);
