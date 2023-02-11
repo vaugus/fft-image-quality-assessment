@@ -35,8 +35,6 @@ cv::Mat BinaryMaskHandler::create_radial_vector_mask(int width, int height) {
     draw->white_line(mask, center, vector_head);
   }
 
-  mask.convertTo(mask, CV_8UC1);
-
   return mask;
 }
 
