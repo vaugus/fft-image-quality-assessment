@@ -5,12 +5,17 @@
 #include "opencv4/opencv2/imgproc.hpp"
 #include "opencv4/opencv2/imgcodecs.hpp"
 #include "opencv4/opencv2/highgui.hpp"
+#include "../wrappers/draw.hpp"
 
 class ImageIO {
+  private:
+    Draw *draw;
 
-public:
-  cv::Mat open_image(std::string const& path);
-  bool save_image(std::string const& path, cv::Mat image);
+  public:
+    ImageIO(Draw *draw);
+
+    cv::Mat open_image(std::string const& path);
+    bool save_image(std::string const& path, cv::Mat image);
 };
 
 #endif

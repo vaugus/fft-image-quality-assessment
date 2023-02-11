@@ -2,7 +2,6 @@
 #define ABSTRACT_HANDLER_HPP
 
 #include "handler.hpp"
-#include <string>
 
 class AbstractHandler : public Handler {
   private:

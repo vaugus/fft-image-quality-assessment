@@ -2,13 +2,15 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
+#include "../../include/handlers/binary_mask_handler.hpp"
+#include "../../include/wrappers/draw.hpp"
 
-#include "../include/binary_mask_handler.hpp"
+Draw *draw = new Draw();
 
 class BinaryMaskHandlerTest : public ::testing::Test  {
   protected:
     virtual void SetUp() override {      
-      handler = new BinaryMaskHandler(); 
+      handler = new BinaryMaskHandler(draw); 
     }
 
     double round(double value) {
@@ -45,3 +47,4 @@ TEST_F(BinaryMaskHandlerTest, fills_angle_data) {
   EXPECT_EQ(round(handler->cosines[15]), 0.965926);
   EXPECT_EQ(round(handler->cosines[0]), 1.0);
 }
+

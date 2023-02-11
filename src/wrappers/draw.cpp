@@ -1,6 +1,18 @@
-#include "../include/test_utils.hpp"
+#include "../../include/wrappers/draw.hpp"
 
-void TestUtils::draw_elipse(cv::Mat image, cv::Point center, double angle) {
+cv::Mat Draw::zeros(int width, int height, int type) {
+  return cv::Mat::zeros(height, width, type);
+}
+
+void Draw::draw_line(cv::Mat image, cv::Point center, cv::Point head, cv::Scalar color, int line_type, int shift) {
+  cv::line(image, center, head, color, line_type, shift);
+}
+
+void Draw::white_line(cv::Mat image, cv::Point center, cv::Point head) {
+  draw_line(image, center, head, this->WHITE, 1, 16);
+}
+
+void Draw::draw_elipse(cv::Mat image, cv::Point center, double angle) {
   int thickness = 2;
   int line_type = 8;
   int width = image.rows;
@@ -16,7 +28,7 @@ void TestUtils::draw_elipse(cv::Mat image, cv::Point center, double angle) {
           line_type);
 }
 
-void TestUtils::draw_filled_circle(cv::Mat image, cv::Point center) {
+void Draw::draw_filled_circle(cv::Mat image, cv::Point center) {
   int width = image.rows;
 
   circle(image,
@@ -27,7 +39,7 @@ void TestUtils::draw_filled_circle(cv::Mat image, cv::Point center) {
          cv::LINE_8);
 }
 
-cv::Mat TestUtils::create_atom_image() {
+cv::Mat Draw::create_atom_image() {
   int width = 400;
   cv::Mat atom = cv::Mat::zeros(width, width, CV_8UC3);
   cv::Point center = cv::Point(width / 2, width / 2);

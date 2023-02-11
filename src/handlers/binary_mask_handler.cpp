@@ -1,4 +1,8 @@
-#include "../include/binary_mask_handler.hpp"
+#include "../../include/handlers/binary_mask_handler.hpp"
+
+BinaryMaskHandler::BinaryMaskHandler(Draw *draw) {
+  this->draw = draw;
+}
 
 void BinaryMaskHandler::init_angle_functions_with_steps(int step, int limit) {
   for (int angle = 0; angle <= limit; angle += step) {
@@ -15,9 +19,9 @@ double BinaryMaskHandler::compute_vector_head(int x, int y, int angle) {
 cv::Mat BinaryMaskHandler::create_radial_vector_mask(int width, int height) {
   const int center_width = width / 2;
   const int center_height = height / 2;
-  
+
   cv::Point center = cv::Point(center_width, center_height);
-  cv::Mat mask = cv::Mat::zeros(height, width, CV_8UC1);
+  cv::Mat mask = draw->zeros(width, height, CV_8UC1);
 
   cv::Point vector_head;
   double radius_length = 0.0;
@@ -28,7 +32,7 @@ cv::Mat BinaryMaskHandler::create_radial_vector_mask(int width, int height) {
     vector_head.x = (int) round(center.x + radius_length * this->cosines[angle]);
     vector_head.y = (int) round(center.y + radius_length * this->sines[angle]);
 
-    cv::line(mask, center, vector_head, cv::Scalar(255, 255, 255), 1, 16);
+    draw->white_line(mask, center, vector_head);
   }
 
   mask.convertTo(mask, CV_8UC1);
