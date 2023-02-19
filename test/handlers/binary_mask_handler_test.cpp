@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include <sstream>
 #include "../../include/handlers/binary_mask_handler.hpp"
+#include "../../include/model/mask_lookup.hpp"
 #include "../../include/wrappers/draw.hpp"
 #include "../../include/wrappers/image_io.hpp"
 
@@ -48,6 +49,23 @@ TEST_F(BinaryMaskHandlerTest, fills_angle_data) {
   EXPECT_EQ(round(handler->cosines[0]), 1.0);
 }
 
+TEST_F(BinaryMaskHandlerTest, creates_new_mask_if_not_exists) {
+  MaskLookup *lookup = MaskLookup::get_instance();
+  cv::Mat image = draw->zeros(400, 200, CV_8UC1);
+  Request request;
+  request.image = image;
+  int initial_size = lookup->size();
+
+  EXPECT_TRUE(lookup->of(image.rows, image.cols).empty());
+  handler->handle(request);
+
+  EXPECT_FALSE(lookup->of(image.rows, image.cols).empty());
+  EXPECT_EQ(initial_size + 1, lookup->size());
+  handler->handle(request);
+
+  EXPECT_EQ(initial_size + 1, lookup->size());
+}
+
 class CreateRadialVectorMaskTest : public ::testing::TestWithParam<std::tuple<int, int>> {
   protected:
     virtual void SetUp() override {      
@@ -86,4 +104,3 @@ INSTANTIATE_TEST_CASE_P(
       std::make_tuple(100, 100),
       std::make_tuple(100, 200),
       std::make_tuple(200, 100)));
-
