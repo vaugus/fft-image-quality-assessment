@@ -36,3 +36,7 @@ cv::Mat MaskLookup::of(int width, int height) {
 void MaskLookup::insert(cv::Mat mask) {
   this->index[{mask.cols, mask.rows}] = mask;
 }
+
+int MaskLookup::size() {
+  return this->index.size();
+}

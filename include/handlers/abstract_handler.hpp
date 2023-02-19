@@ -15,7 +15,7 @@ class AbstractHandler : public Handler {
       return handler;
     }
 
-    std::string handle(std::string request) override {
+    Request handle(Request request) override {
       if (this->next) return this->next->handle(request);
 
       return {};

@@ -24,6 +24,7 @@ class MaskLookup {
     bool mask_exists(int width, int height);
     cv::Mat of(int width, int height);
     void insert(cv::Mat mask);
+    int size();
 };
 
 #endif

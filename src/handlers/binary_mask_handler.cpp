@@ -1,4 +1,5 @@
 #include "../../include/handlers/binary_mask_handler.hpp"
+#include "../../include/model/mask_lookup.hpp"
 
 BinaryMaskHandler::BinaryMaskHandler(Draw *draw) {
   this->draw = draw;
@@ -38,7 +39,15 @@ cv::Mat BinaryMaskHandler::create_radial_vector_mask(int width, int height) {
   return mask;
 }
 
+Request BinaryMaskHandler::handle(Request request) {
+  MaskLookup *lookup = MaskLookup::get_instance();
+  cv::Mat image = request.image;
 
-std::string BinaryMaskHandler::handle(std::string request) {
+  if (lookup->mask_exists(image.rows, image.cols))
+    return AbstractHandler::handle(request);
+  
+  cv::Mat mask = create_radial_vector_mask(image.rows, image.cols);
+  lookup->insert(mask);
+
   return AbstractHandler::handle(request);
 }
