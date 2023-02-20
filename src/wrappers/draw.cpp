@@ -1,7 +1,14 @@
 #include "../../include/wrappers/draw.hpp"
 
+const cv::Scalar Draw::ZERO_BGR = cv::Scalar::all(0);
+const cv::Scalar Draw::ONE_BGR = cv::Scalar::all(255);
+
 cv::Mat Draw::zeros(int width, int height, int type) {
   return cv::Mat::zeros(height, width, type);
+}
+
+cv::Mat Draw::ones(int width, int height, int type) {
+  return cv::Mat::ones(height, width, type);
 }
 
 void Draw::draw_line(cv::Mat image, cv::Point center, cv::Point head, cv::Scalar color, int line_type, int shift) {
@@ -9,7 +16,7 @@ void Draw::draw_line(cv::Mat image, cv::Point center, cv::Point head, cv::Scalar
 }
 
 void Draw::white_line(cv::Mat image, cv::Point center, cv::Point head) {
-  draw_line(image, center, head, this->WHITE, 1, 16);
+  draw_line(image, center, head, Draw::ONE_BGR, 1, 16);
 }
 
 void Draw::draw_elipse(cv::Mat image, cv::Point center, double angle) {
@@ -56,4 +63,30 @@ cv::Mat Draw::create_atom_image() {
   draw_filled_circle(atom, center);
 
   return atom;
+}
+
+Border Draw::create_zeros_square_border(cv::Mat image) {
+  int pad_size = std::max(image.rows, image.cols);
+
+  Border border = {};
+  border.top = 0;
+  border.bottom = pad_size - image.rows;
+  border.left = 0;
+  border.right = pad_size - image.cols;
+  border.type = cv::BORDER_CONSTANT;
+  border.value = Draw::ZERO_BGR;
+  
+  return border;
+}
+
+cv::Mat Draw::apply_border(cv::Mat source, cv::Mat target, Border border) {
+  cv::copyMakeBorder(source, target, border.top, border.bottom,
+                     border.left, border.right, border.type, border.value);
+  return target;
+}
+
+cv::Mat Draw::pad_with_zeros(cv::Mat const &image) {
+  cv::Mat padded_image;
+  apply_border(image, padded_image, create_zeros_square_border(image));
+  return padded_image;
 }
