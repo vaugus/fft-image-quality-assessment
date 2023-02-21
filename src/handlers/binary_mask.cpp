@@ -1,11 +1,11 @@
-#include "../../include/handlers/binary_mask_handler.hpp"
+#include "../../include/handlers/binary_mask.hpp"
 #include "../../include/model/mask_lookup.hpp"
 
-BinaryMaskHandler::BinaryMaskHandler(Draw *draw) {
+BinaryMask::BinaryMask(Draw *draw) {
   this->draw = draw;
 }
 
-void BinaryMaskHandler::init_angle_functions_with_steps(int step, int limit) {
+void BinaryMask::init_angle_functions_with_steps(int step, int limit) {
   for (int angle = 0; angle <= limit; angle += step) {
     this->cosines[angle] = cos(angle * M_PI / 180.0);
     this->sines[angle] = sin(angle * M_PI / 180.0);
@@ -13,11 +13,11 @@ void BinaryMaskHandler::init_angle_functions_with_steps(int step, int limit) {
   }
 }
 
-double BinaryMaskHandler::compute_vector_head(int x, int y, int angle) {
+double BinaryMask::compute_vector_head(int x, int y, int angle) {
   return (x * y) / sqrt(pow((x * this->cosines[angle]), 2) + pow((y * this->sines[angle]), 2));
 }
 
-cv::Mat BinaryMaskHandler::create_radial_vector_mask(int width, int height) {
+cv::Mat BinaryMask::create_radial_vector_mask(int width, int height) {
   const int center_width = width / 2;
   const int center_height = height / 2;
 
@@ -39,7 +39,7 @@ cv::Mat BinaryMaskHandler::create_radial_vector_mask(int width, int height) {
   return mask;
 }
 
-Request BinaryMaskHandler::handle(Request request) {
+Request BinaryMask::handle(Request request) {
   MaskLookup *lookup = MaskLookup::get_instance();
   cv::Mat image = request.image;
 

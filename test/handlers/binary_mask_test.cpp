@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include <sstream>
-#include "../../include/handlers/binary_mask_handler.hpp"
+#include "../../include/handlers/binary_mask.hpp"
 #include "../../include/model/mask_lookup.hpp"
 #include "../../include/wrappers/draw.hpp"
 #include "../../include/wrappers/image_io.hpp"
@@ -8,10 +8,10 @@
 Draw *draw = new Draw();
 extern ImageIO *io;
 
-class BinaryMaskHandlerTest : public ::testing::Test  {
+class BinaryMaskTest : public ::testing::Test  {
   protected:
     virtual void SetUp() override {      
-      handler = new BinaryMaskHandler(draw); 
+      handler = new BinaryMask(draw); 
     }
 
     double round(double value) {
@@ -20,16 +20,16 @@ class BinaryMaskHandlerTest : public ::testing::Test  {
       return std::stod(valueString.str());
     }
 
-    BinaryMaskHandler *handler;
+    BinaryMask *handler;
 };
 
-TEST_F(BinaryMaskHandlerTest, initializes_angle_data_with_empty_array) {
+TEST_F(BinaryMaskTest, initializes_angle_data_with_empty_array) {
   EXPECT_EQ(handler->sines.size(), 0);
   EXPECT_EQ(handler->cosines.size(), 0);
 }
 
 // theta = {0, 15, 30, 45, 60, 75, 90}
-TEST_F(BinaryMaskHandlerTest, fills_angle_data) {
+TEST_F(BinaryMaskTest, fills_angle_data) {
   handler->init_angle_functions_with_steps(15, 90);
 
   EXPECT_EQ(round(handler->sines[0]), 0.0);
@@ -49,7 +49,7 @@ TEST_F(BinaryMaskHandlerTest, fills_angle_data) {
   EXPECT_EQ(round(handler->cosines[0]), 1.0);
 }
 
-TEST_F(BinaryMaskHandlerTest, creates_new_mask_if_not_exists) {
+TEST_F(BinaryMaskTest, creates_new_mask_if_not_exists) {
   MaskLookup *lookup = MaskLookup::get_instance();
   cv::Mat image = draw->zeros(400, 200, CV_8UC1);
   Request request;
@@ -69,10 +69,10 @@ TEST_F(BinaryMaskHandlerTest, creates_new_mask_if_not_exists) {
 class CreateRadialVectorMaskTest : public ::testing::TestWithParam<std::tuple<int, int>> {
   protected:
     virtual void SetUp() override {      
-      handler = new BinaryMaskHandler(draw); 
+      handler = new BinaryMask(draw); 
     }
   
-    BinaryMaskHandler *handler;
+    BinaryMask *handler;
 };
 
 TEST_P(CreateRadialVectorMaskTest, should_create_mask_with_given_parameters) {
@@ -98,7 +98,7 @@ TEST_P(CreateRadialVectorMaskTest, should_create_mask_with_given_parameters) {
 }
 
 INSTANTIATE_TEST_CASE_P(
-  BinaryMaskHandlerTest,
+  BinaryMaskTest,
   CreateRadialVectorMaskTest,
   ::testing::Values(
       std::make_tuple(100, 100),

@@ -10,7 +10,7 @@
 #include "opencv4/opencv2/imgproc.hpp"
 #include "opencv4/opencv2/highgui.hpp"
 
-class BinaryMaskHandler : public AbstractHandler {
+class BinaryMask : public AbstractHandler {
   private:
     Draw *draw;
 
@@ -19,7 +19,7 @@ class BinaryMaskHandler : public AbstractHandler {
     std::map<int, double> sines;
     std::vector<int> angles;
 
-    BinaryMaskHandler(Draw *draw);
+    BinaryMask(Draw *draw);
 
     void init_angle_functions_with_steps(int step, int limit);
     double compute_vector_head(int y, int x, int angle);
