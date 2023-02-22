@@ -11,7 +11,7 @@ extern ImageIO *io;
 class BinaryMaskTest : public ::testing::Test  {
   protected:
     virtual void SetUp() override {      
-      handler = new BinaryMask(draw); 
+      handler = new BinaryMask(); 
     }
 
     double round(double value) {
@@ -69,7 +69,7 @@ TEST_F(BinaryMaskTest, creates_new_mask_if_not_exists) {
 class CreateRadialVectorMaskTest : public ::testing::TestWithParam<std::tuple<int, int>> {
   protected:
     virtual void SetUp() override {      
-      handler = new BinaryMask(draw); 
+      handler = new BinaryMask(); 
     }
   
     BinaryMask *handler;
