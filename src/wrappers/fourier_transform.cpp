@@ -1,26 +1,27 @@
 #include "../../include/wrappers/fourier_transform.hpp"
 
-cv::Mat FourierTransform::perform_fft(cv::Mat image) {
+ComplexImage FourierTransform::perform_fft(cv::Mat image) {
+  cv::Mat spectrum;
   cv::Mat complex_planes[] = {
     cv::Mat_<double>(image),
     cv::Mat::zeros(image.size(), CV_64F)
   };
 
-  cv::Mat coefficients;
-
   // Add a third plane with zeros to the complex planes and perform fft.
-  cv::merge(complex_planes, 2, coefficients);
-  cv::dft(coefficients, coefficients);
+  cv::merge(complex_planes, 2, spectrum);
+  cv::dft(spectrum, spectrum);
 
   // complex_planes[0] = Re(DFT(I), complex_planes[1] = Im(DFT(I))
-  cv::split(coefficients, complex_planes);
+  cv::split(spectrum, complex_planes);
 
-  return coefficients;
+  ComplexImage complex_image = { complex_planes[0], complex_planes[1]};
+
+  return complex_image;
 }
 
-cv::Mat FourierTransform::magnitude(cv::Mat *complex_planes) {
-  cv::magnitude(complex_planes[0], complex_planes[0], complex_planes[1]);
-  return complex_planes[0];
+cv::Mat FourierTransform::magnitude(ComplexImage image) {
+  cv::magnitude(image.real, image.real, image.imaginary);
+  return image.real;
 }
 
 cv::Mat FourierTransform::logarithmic_scale(cv::Mat spectrum) {

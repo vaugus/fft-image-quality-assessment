@@ -6,6 +6,11 @@
 #include "opencv4/opencv2/imgcodecs.hpp"
 #include "opencv4/opencv2/highgui.hpp"
 
+struct ComplexImage {
+  cv::Mat real;
+  cv::Mat imaginary;
+};
+
 struct Quadrants {
   cv::Mat top_left;
   cv::Mat top_right;
@@ -15,8 +20,8 @@ struct Quadrants {
 
 class FourierTransform {
   public:
-    cv::Mat perform_fft(cv::Mat image);
-    cv::Mat magnitude(cv::Mat *complex_planes);
+    ComplexImage perform_fft(cv::Mat image);
+    cv::Mat magnitude(ComplexImage image);
     cv::Mat logarithmic_scale(cv::Mat magnitude);
     Quadrants split_into_four_quadrants(cv::Mat matrix);
     cv::Mat merge_quadrants(Quadrants quadrants, cv::Mat initial_image);

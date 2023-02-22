@@ -37,5 +37,5 @@ tests: $(OBJ) $(TEST_OBJ) gtest_main.a
 clean:
 	find . -type f -name '*.o' -exec rm {} \;
 	find . -type f -name '*.gch' -exec rm {} \;
-	rm -f $(TESTS) tests gtest.a gtest_main.a
+	rm -f $(TESTS) tests gtest.a gtest_main.a core
 	#rm -rf googletest
