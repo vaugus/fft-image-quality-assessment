@@ -22,3 +22,12 @@ TEST(save_image, should_save_png_file) {
   std::remove("test/resources/save_image_test.png");
   EXPECT_FALSE(std::ifstream("test/resources/save_image_test.png"));
 }
+
+TEST(grayscale, should_convert_three_channels_to_one_channel) {
+  cv::Mat image = io->open_image("test/resources/squares.png");
+
+  cv::Mat grayscale = io->grayscale(image);
+
+  EXPECT_EQ(3, image.channels());
+  EXPECT_EQ(1, grayscale.channels());
+}

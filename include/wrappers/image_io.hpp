@@ -16,6 +16,7 @@ class ImageIO {
 
     cv::Mat open_image(std::string const& path);
     bool save_image(std::string const& path, cv::Mat image);
+    cv::Mat grayscale(cv::Mat image);
 };
 
 #endif
