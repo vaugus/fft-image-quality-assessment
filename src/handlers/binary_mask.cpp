@@ -1,9 +1,7 @@
 #include "../../include/handlers/binary_mask.hpp"
 #include "../../include/model/mask_lookup.hpp"
 
-BinaryMask::BinaryMask(Draw *draw) {
-  this->draw = draw;
-}
+extern Draw *draw;
 
 void BinaryMask::init_angle_functions_with_steps(int step, int limit) {
   for (int angle = 0; angle <= limit; angle += step) {

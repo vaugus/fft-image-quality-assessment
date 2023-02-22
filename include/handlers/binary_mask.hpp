@@ -11,15 +11,10 @@
 #include "opencv4/opencv2/highgui.hpp"
 
 class BinaryMask : public AbstractHandler {
-  private:
-    Draw *draw;
-
   public:
     std::map<int, double> cosines;
     std::map<int, double> sines;
     std::vector<int> angles;
-
-    BinaryMask(Draw *draw);
 
     void init_angle_functions_with_steps(int step, int limit);
     double compute_vector_head(int y, int x, int angle);
