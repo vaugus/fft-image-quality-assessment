@@ -23,7 +23,7 @@ class Draw {
     static const cv::Scalar ZERO_BGR;
     static const cv::Scalar ONE_BGR;
 
-    cv::Mat apply_border(cv::Mat source, cv::Mat target, Border border);
+    cv::Mat apply_border(cv::Mat source, Border border);
     Border create_zeros_square_border(cv::Mat image);
 
     cv::Mat zeros(int width, int height, int type);
@@ -34,7 +34,7 @@ class Draw {
     void draw_filled_circle(cv::Mat image, cv::Point center);
     cv::Mat create_atom_image();
 
-    cv::Mat pad_with_zeros(cv::Mat const &image);
+    cv::Mat pad_with_zeros(cv::Mat image);
 };
 
 #endif

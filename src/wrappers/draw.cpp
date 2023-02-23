@@ -79,14 +79,13 @@ Border Draw::create_zeros_square_border(cv::Mat image) {
   return border;
 }
 
-cv::Mat Draw::apply_border(cv::Mat source, cv::Mat target, Border border) {
+cv::Mat Draw::apply_border(cv::Mat source, Border border) {
+  cv::Mat target;
   cv::copyMakeBorder(source, target, border.top, border.bottom,
                      border.left, border.right, border.type, border.value);
   return target;
 }
 
-cv::Mat Draw::pad_with_zeros(cv::Mat const &image) {
-  cv::Mat padded_image;
-  apply_border(image, padded_image, create_zeros_square_border(image));
-  return padded_image;
+cv::Mat Draw::pad_with_zeros(cv::Mat image) {
+  return apply_border(image, create_zeros_square_border(image));
 }
