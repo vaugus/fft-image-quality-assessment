@@ -31,18 +31,16 @@ TEST(create_zeros_square_border, creates_border_if_image_is_not_square) {
 
 TEST(apply_border, does_not_change_the_image_with_empty_border) {
   cv::Mat image = draw->zeros(32, 32, CV_8U);
-  cv::Mat target;
 
-  target = draw->apply_border(image, target, draw->create_zeros_square_border(image));
+  cv::Mat target = draw->apply_border(image, draw->create_zeros_square_border(image));
 
   EXPECT_EQ(0, cv::norm(image, target, cv::NORM_L1));
 }
 
 TEST(apply_border, applies_non_empty_border_to_image) {
   cv::Mat image = draw->ones(32, 64, CV_8U);
-  cv::Mat target;
 
-  target = draw->apply_border(image, target, draw->create_zeros_square_border(image));
+  cv::Mat target = draw->apply_border(image, draw->create_zeros_square_border(image));
   cv::Mat ones_region = target(cv::Range(0, 64), cv::Range(0, 32));
   cv::Mat zeros_region = target(cv::Range(0, 64), cv::Range(32, 64));
 
