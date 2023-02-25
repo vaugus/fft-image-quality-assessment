@@ -10,7 +10,6 @@ class MaskLookup {
     static MaskLookup *instance;
     static std::mutex mutex;
     
-
     MaskLookup();
     ~MaskLookup();
   public:

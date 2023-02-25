@@ -16,10 +16,10 @@ const std::string RESOURCES = "test/resources/";
 class MagnitudeTest : public ::testing::TestWithParam<std::tuple<cv::Mat, cv::Mat>> {
   protected:
     virtual void SetUp() override {      
-      transform = new FourierTransform();
+      fft = new FourierTransform();
     }
   
-    FourierTransform *transform;
+    FourierTransform *fft;
 };
 
 TEST_P(MagnitudeTest, computes_magnitude_of_coefficients) {
@@ -27,7 +27,7 @@ TEST_P(MagnitudeTest, computes_magnitude_of_coefficients) {
   ComplexImage complex_image = { matrix, matrix };
   cv::Mat expected = std::get<1>(GetParam());
 
-  cv::Mat actual = transform->magnitude(complex_image);
+  cv::Mat actual = fft->compute_magnitude(complex_image);
 
   EXPECT_NEAR(0, cv::norm(expected, actual, cv::NORM_L1), 1.0e-15);
 }
@@ -44,17 +44,17 @@ INSTANTIATE_TEST_CASE_P(
 class LogarithmicScaleTest : public ::testing::TestWithParam<std::tuple<cv::Mat, cv::Mat>> {
   protected:
     virtual void SetUp() override {      
-      transform = new FourierTransform();
+      fft = new FourierTransform();
     }
   
-    FourierTransform *transform;
+    FourierTransform *fft;
 };
 
 TEST_P(LogarithmicScaleTest, computes_logarithmic_scale_of_coefficients) {
   cv::Mat spectrum = std::get<0>(GetParam());
   cv::Mat expected = std::get<1>(GetParam());
 
-  cv::Mat actual = transform->logarithmic_scale(spectrum);
+  cv::Mat actual = fft->logarithmic_scale(spectrum);
 
   EXPECT_NEAR(0, cv::norm(expected, actual, cv::NORM_L1), 1.0e-15);
 }
@@ -71,7 +71,7 @@ INSTANTIATE_TEST_CASE_P(
 class FFTShiftTest : public ::testing::Test  {
   protected:
     virtual void SetUp() override {      
-      transform = new FourierTransform();
+      fft = new FourierTransform();
     }
     
     void assert_quadrants_equals(cv::Mat quadrant, int value) {
@@ -79,7 +79,7 @@ class FFTShiftTest : public ::testing::Test  {
       EXPECT_EQ(0, cv::norm(expected, quadrant, cv::NORM_L1));
     }
   
-  FourierTransform *transform;
+  FourierTransform *fft;
 };
 
 TEST_F(FFTShiftTest, shifts_quadrants_diagonally) {
@@ -90,16 +90,16 @@ TEST_F(FFTShiftTest, shifts_quadrants_diagonally) {
     3, 3, 4, 4
   );
 
-  Quadrants quadrants = transform->split_into_four_quadrants(matrix);
+  Quadrants quadrants = fft->split_into_four_quadrants(matrix);
   assert_quadrants_equals(quadrants.top_left, 1);
   assert_quadrants_equals(quadrants.top_right, 2);
   assert_quadrants_equals(quadrants.bottom_left, 3);
   assert_quadrants_equals(quadrants.bottom_right, 4);
 
-  cv::Mat shifted = transform->shift_quadrants(matrix);
+  cv::Mat shifted = fft->shift_quadrants(matrix);
 
   quadrants = {};
-  quadrants = transform->split_into_four_quadrants(shifted);
+  quadrants = fft->split_into_four_quadrants(shifted);
 
   assert_quadrants_equals(quadrants.top_left, 4);
   assert_quadrants_equals(quadrants.top_right, 3);
@@ -108,11 +108,11 @@ TEST_F(FFTShiftTest, shifts_quadrants_diagonally) {
 }
 
 TEST(PerformFourierTransformTest, should_return_complex_coefficients_of_square_image) {
-  FourierTransform *transform = new FourierTransform();
+  FourierTransform *fft = new FourierTransform();
   cv::Mat image = io->open_image(RESOURCES + "squares.png");
 
   cv::Mat expected = io->grayscale(io->open_image(RESOURCES + "real_squares.png"));
-  ComplexImage actual = transform->perform_fft(io->grayscale(image));
+  ComplexImage actual = fft->perform_fft(io->grayscale(image));
 
   actual.real.convertTo(actual.real, CV_8UC3);
   expected.convertTo(expected, CV_8UC3);
