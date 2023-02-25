@@ -19,7 +19,7 @@ ComplexImage FourierTransform::perform_fft(cv::Mat image) {
   return complex_image;
 }
 
-cv::Mat FourierTransform::magnitude(ComplexImage image) {
+cv::Mat FourierTransform::compute_magnitude(ComplexImage image) {
   cv::magnitude(image.real, image.real, image.imaginary);
   return image.real;
 }

@@ -21,7 +21,7 @@ struct Quadrants {
 class FourierTransform {
   public:
     ComplexImage perform_fft(cv::Mat image);
-    cv::Mat magnitude(ComplexImage image);
+    cv::Mat compute_magnitude(ComplexImage image);
     cv::Mat logarithmic_scale(cv::Mat magnitude);
     Quadrants split_into_four_quadrants(cv::Mat matrix);
     cv::Mat merge_quadrants(Quadrants quadrants, cv::Mat initial_image);
