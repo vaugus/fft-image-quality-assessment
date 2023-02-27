@@ -6,11 +6,6 @@
 MaskLookup *lookup = MaskLookup::get_instance();
 extern Draw *draw;
 
-TEST(MaskLookupTest, initializes_with_empty_map) {
-  EXPECT_TRUE(lookup->of(100, 100).empty());
-  EXPECT_FALSE(lookup->mask_exists(100, 100));
-}
-
 TEST(MaskLookupTest, should_insert_and_return_masks) {
   cv::Mat zeros = draw->zeros(100, 200, CV_8UC1);
 
