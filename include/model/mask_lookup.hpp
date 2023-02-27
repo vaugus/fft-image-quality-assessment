@@ -13,7 +13,6 @@ class MaskLookup {
     MaskLookup();
     ~MaskLookup();
   public:
-
     std::map<std::pair<int, int>, cv::Mat> index;
 
     MaskLookup(MaskLookup &other) = delete;
