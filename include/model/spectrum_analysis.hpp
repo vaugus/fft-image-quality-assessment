@@ -12,13 +12,19 @@ class SpectrumAnalysis : public Builder<SpectrumAnalysis> {
     double max;
     cv::Mat gray;
     cv::Mat spectrum;
-    cv::Mat spectrum_abs_values;
+    cv::Mat absolute_spectrum;
     ComplexImage complex_image;
   public:
     SpectrumAnalysis& prepare_image(cv::Mat image);
     SpectrumAnalysis& apply_fft();
     SpectrumAnalysis& apply_mask();
     SpectrumAnalysis& compute_maximum_absolute_value();
+
+    ComplexImage get_complex_image();
+    cv::Mat get_preprocessed_image();
+    cv::Mat get_spectrum();
+    cv::Mat get_absolute_spectrum();
+    double get_max_absolute_value();
 };
 
 #endif
