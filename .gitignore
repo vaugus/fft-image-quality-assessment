@@ -1,3 +1,6 @@
 Testing/
 googletest/
 .vscode/
+*.o
+*.a
+tests
