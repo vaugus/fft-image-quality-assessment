@@ -17,6 +17,8 @@ class ImageIO {
     cv::Mat open_image(std::string const& path);
     bool save_image(std::string const& path, cv::Mat image);
     cv::Mat grayscale(cv::Mat image);
+    void save_as_yaml(std::string path, cv::Mat image);
+    cv::Mat read_from_yaml(std::string path);
 };
 
 #endif
