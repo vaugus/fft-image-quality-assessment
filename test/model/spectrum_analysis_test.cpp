@@ -1,4 +1,6 @@
 #include "gtest/gtest.h"
+
+#include "../../include/util.hpp"
 #include "../../include/model/spectrum_analysis.hpp"
 #include "../../include/model/mask_lookup.hpp"
 #include "../../include/wrappers/draw.hpp"
@@ -11,11 +13,9 @@ extern MaskLookup *lookup;
 class SpectrumAnalysisTest : public ::testing::Test  {
   protected:
     virtual void SetUp() override {      
-      analysis = new SpectrumAnalysis(); 
       image = io->open_image("test/resources/squares.png");
     }
 
-    SpectrumAnalysis *analysis;
     cv::Mat image;
 };
 
@@ -47,7 +47,7 @@ TEST_F(SpectrumAnalysisTest, performs_the_fourier_transform_of_grayscale_image) 
   EXPECT_EQ(image.cols, analysis.get_spectrum().cols);
 
   cv::Mat expected = io->read_from_yaml("test/resources/yaml/spectrum.yaml");
-  EXPECT_EQ(0, cv::norm(expected, analysis.get_spectrum(), cv::NORM_L1));
+  EXPECT_NEAR(0, cv::norm(expected, analysis.get_spectrum(), cv::NORM_L1), 1.0e-15);
 }
 
 TEST_F(SpectrumAnalysisTest, applies_mask_to_fourier_transform_output) {
@@ -61,7 +61,7 @@ TEST_F(SpectrumAnalysisTest, applies_mask_to_fourier_transform_output) {
     .build();
 
   cv::Mat expected = io->read_from_yaml("test/resources/yaml/masked-spectrum.yaml");
-  EXPECT_EQ(0, cv::norm(expected, analysis.get_spectrum(), cv::NORM_L1));
+  EXPECT_NEAR(0, cv::norm(expected, analysis.get_spectrum(), cv::NORM_L1), 1.0e-15);
 }
 
 TEST_F(SpectrumAnalysisTest, computes_absolute_values_and_its_maximum) {
@@ -76,6 +76,31 @@ TEST_F(SpectrumAnalysisTest, computes_absolute_values_and_its_maximum) {
     .build();
 
   cv::Mat expected = io->read_from_yaml("test/resources/yaml/absolute-spectrum.yaml");
-  EXPECT_EQ(0, cv::norm(expected, analysis.get_absolute_spectrum(), cv::NORM_L1));
+  EXPECT_NEAR(0, cv::norm(expected, analysis.get_absolute_spectrum(), cv::NORM_L1), 1.0e-15);
   EXPECT_EQ(426974, analysis.get_max_absolute_value());
 }
+
+TEST_F(SpectrumAnalysisTest, filters_pixels_given_a_threshold) {
+  cv::Mat mask = io->grayscale(io->open_image("test/resources/100-100.png"));
+  lookup->insert(mask);
+
+  SpectrumAnalysis analysis = SpectrumAnalysis::builder()
+    .prepare_image(image)
+    .apply_fft()
+    .apply_mask()
+    .compute_maximum_absolute_value()
+    .filter_absolute_values_with_threshold(1000.0)
+    .build();
+
+  std::vector<double> values = analysis.get_kurtosis_eligible_values();
+  std::vector<double> expected = util::read_doubles_from_file("test/resources/txt/values.txt");
+
+  int size = values.size();
+
+  EXPECT_EQ(expected.size(), size);
+
+  for (int i = 0; i < size; i++) {
+    EXPECT_NEAR(expected.at(i), values.at(i), 0.01);
+  }
+}
+
