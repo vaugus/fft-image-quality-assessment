@@ -32,6 +32,20 @@ SpectrumAnalysis& SpectrumAnalysis::compute_maximum_absolute_value() {
   return *this;
 }
 
+SpectrumAnalysis& SpectrumAnalysis::filter_absolute_values_with_threshold(double threshold) {
+  for(int i = 0; i < this->absolute_spectrum.rows; i++) {
+      const double* row = this->absolute_spectrum.ptr<double>(i);
+      for(int j = 0; j < this->absolute_spectrum.cols; j++) {
+        double pixel = row[j];
+        if (pixel > (this->max / threshold)) {
+          this->kurtosis_eligible_values.push_back(pixel);
+        }
+      }
+  }
+
+  return *this;
+}
+
 ComplexImage SpectrumAnalysis::get_complex_image() {
   return this->complex_image;
 }
@@ -50,4 +64,8 @@ cv::Mat SpectrumAnalysis::get_absolute_spectrum() {
 
 double SpectrumAnalysis::get_max_absolute_value() {
   return this->max;
+}
+
+std::vector<double> SpectrumAnalysis::get_kurtosis_eligible_values() {
+  return this->kurtosis_eligible_values;
 }

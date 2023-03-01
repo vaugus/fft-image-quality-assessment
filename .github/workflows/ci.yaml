@@ -13,11 +13,8 @@ jobs:
       - name: Pull OpenCV Docker image
         run: docker pull vaugus/opencv:4.6.0
 
-      - name: Compile
-        run: docker run --rm -i --name opencv -v $(pwd):/work vaugus/opencv:4.6.0 make
-
       - name: Test
-        run: docker run --rm -i --name opencv -v $(pwd):/work vaugus/opencv:4.6.0 ./tests
+        run: docker run --rm -i --name opencv -v $(pwd):/work vaugus/opencv:4.6.0 /bin/sh -c "make && ./tests"
 
       - name: Clean
         run: docker run --rm -i --name opencv -v $(pwd):/work vaugus/opencv:4.6.0 make clean
