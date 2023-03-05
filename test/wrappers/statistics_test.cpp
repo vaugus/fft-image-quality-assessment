@@ -44,7 +44,6 @@ INSTANTIATE_TEST_CASE_P(
       std::make_tuple(integers, 6666.666666666667),
       std::make_tuple(floating, 1452.409002908822)));
 
-
 class KurtosisTest : public ::testing::TestWithParam<std::tuple<std::vector<double>, double>> {
   protected:
     virtual void SetUp() override {      
