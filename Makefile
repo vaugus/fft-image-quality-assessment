@@ -14,10 +14,10 @@ TEST_OBJ = $(subst .cpp,.o,$(TEST))
 
 .PHONY: all clean
 
-all : setup-googletest gtest_main.a $(OBJ) $(TEST_OBJ) tests
+all : setup-googletest gtest_main.a $(OBJ) $(TEST_OBJ) main
 
 setup-googletest:
-	$(shell chmod +x setup-googletest.sh && ./setup-googletest.sh)
+	$(shell ./setup-googletest.sh)
 
 gtest-all.o : ${googletestSources}
 	$(CXX) $(CPPFLAGS) -I$(GTEST) $(CXXFLAGS) -c $(GTEST)/src/gtest-all.cc
@@ -31,7 +31,7 @@ gtest_main.a : gtest-all.o gtest_main.o
 %: %.o
 	$(CXX) $^ $(LDFLAGS) -o $@ $(LIBS)
 
-tests: $(OBJ) $(TEST_OBJ) gtest_main.a
+main: $(OBJ) $(TEST_OBJ) gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@ $(LIBS)
 
 clean:

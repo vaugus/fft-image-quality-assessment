@@ -1,6 +1,8 @@
 #ifndef STATISTICS_HPP
 #define STATISTICS_HPP
 
+#include <cmath>
+#include <numeric>
 #include <vector>
 
 class Statistics {
