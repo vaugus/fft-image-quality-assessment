@@ -40,6 +40,7 @@ cv::Mat BinaryMask::create_radial_vector_mask(int width, int height) {
 Request BinaryMask::handle(Request request) {
   MaskLookup *lookup = MaskLookup::get_instance();
   cv::Mat image = request.image;
+  this->init_angle_functions_with_steps(5, 360);
 
   if (lookup->mask_exists(image.rows, image.cols))
     return AbstractHandler::handle(request);
