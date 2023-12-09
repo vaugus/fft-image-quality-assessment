@@ -1,7 +1,7 @@
 #include "../../include/handlers/quality_index.hpp"
 #include "../../include/wrappers/statistics.hpp"
 
-Statistics *statistics = new Statistics();
+extern Statistics *statistics;
 
 double QualityIndex::compute_index(cv::Mat image) {
   SpectrumAnalysis analysis = SpectrumAnalysis::builder()

@@ -5,7 +5,7 @@
 #include <iostream>
 
 extern Draw *draw;
-ImageIO *io = new ImageIO(draw);
+extern ImageIO *io;
 
 TEST(open_image, should_return_cv_mat_with_pixels) {
   cv::Mat image = io->open_image("test/resources/atom.png");

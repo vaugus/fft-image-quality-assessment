@@ -3,7 +3,7 @@
 #include "../../include/model/mask_lookup.hpp"
 #include "../../include/wrappers/draw.hpp"
 
-MaskLookup *lookup = MaskLookup::get_instance();
+extern MaskLookup *lookup;
 extern Draw *draw;
 
 TEST(MaskLookupTest, should_insert_and_return_masks) {

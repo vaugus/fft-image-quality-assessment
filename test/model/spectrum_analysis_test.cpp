@@ -85,4 +85,3 @@ TEST_F(SpectrumAnalysisTest, filters_pixels_given_a_threshold) {
     EXPECT_NEAR(expected.at(i), values.at(i), 0.01);
   }
 }
-

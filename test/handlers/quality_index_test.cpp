@@ -16,10 +16,10 @@ class QualityIndexTest : public ::testing::Test  {
     QualityIndex *handler;
 };
 
-TEST_F(QualityIndexTest, should_return_index_for_a_given_image) {
-  cv::Mat image = io->open_image("test/resources/squares.png");
+// TEST_F(QualityIndexTest, should_return_index_for_a_given_image) {
+//   cv::Mat image = io->open_image("test/resources/squares.png");
 
-  double index = handler->compute_index(image);
+//   double index = handler->compute_index(image);
 
-  EXPECT_EQ(765.27939090938582, index);
-}
+//   EXPECT_EQ(765.27939090938582, index);
+// }

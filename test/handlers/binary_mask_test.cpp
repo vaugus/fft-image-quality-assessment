@@ -5,7 +5,7 @@
 #include "../../include/wrappers/draw.hpp"
 #include "../../include/wrappers/image_io.hpp"
 
-Draw *draw = new Draw();
+extern Draw *draw;
 extern ImageIO *io;
 
 class BinaryMaskTest : public ::testing::Test  {
